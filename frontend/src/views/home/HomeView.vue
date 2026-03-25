@@ -13,13 +13,22 @@
           <div class="logo-mark">H</div>
           <div class="logo-copy">
             <h1>HAPPY HANDS</h1>
-            <p>8,000円(税込)以上のご購入で 送料無料</p>
+            <p>医療・歯科衛生用品オンラインショップ</p>
+            <small>8,000円(税込)以上のご購入で 送料無料</small>
           </div>
         </div>
 
-        <div class="search-block">
-          <input type="text" placeholder="商品名・商品番号・キーワードで検索" />
-          <button>検索</button>
+        <div class="search-area">
+          <div class="search-keywords">
+            <span>人気検索</span>
+            <a href="javascript:void(0)">グローブ</a>
+            <a href="javascript:void(0)">マスク</a>
+            <a href="javascript:void(0)">エプロン</a>
+          </div>
+          <div class="search-block">
+            <input type="text" placeholder="商品名・商品番号・キーワードで検索" />
+            <button>検索</button>
+          </div>
         </div>
 
         <div class="header-icons">
@@ -39,7 +48,7 @@
       </div>
 
       <div class="container nav-tabs">
-        <a href="javascript:void(0)">商品カテゴリ</a>
+        <a href="javascript:void(0)" class="active">商品カテゴリ</a>
         <a href="javascript:void(0)">グローブ特集</a>
         <a href="javascript:void(0)">セール商品</a>
         <a href="javascript:void(0)">在庫処分</a>
@@ -51,26 +60,35 @@
         <button class="carousel-arrow left">‹</button>
 
         <div class="hero-card side fade-left">
-          <div class="hero-bg mint">
-            <div class="hero-kicker">FEATURE</div>
-            <h3>Soft Apron</h3>
-            <p>医療・介護・美容向けエプロン特集</p>
+          <div class="hero-bg mint apron-bg">
+            <div class="poster-tag">FEATURE</div>
+            <div class="poster-copy">
+              <small>for clinic & care</small>
+              <h3>エプロン</h3>
+              <p>使い捨て・防水・衛生管理向け</p>
+            </div>
           </div>
         </div>
 
         <div class="hero-card main">
-          <div class="hero-bg coral">
-            <div class="hero-kicker">SPECIAL SALE</div>
-            <h2>新生活応援セール</h2>
-            <p>対象商品 最大 20% OFF / 期間限定</p>
+          <div class="hero-bg coral spring-bg">
+            <div class="poster-tag sale">SPECIAL SALE</div>
+            <div class="poster-copy main-copy">
+              <small>Happy Hands Campaign</small>
+              <h2>新生活応援セール</h2>
+              <p>対象商品 最大20%OFF / 医療・歯科用品をお得にまとめ買い</p>
+            </div>
           </div>
         </div>
 
         <div class="hero-card side fade-right">
-          <div class="hero-bg blue">
-            <div class="hero-kicker">GLOVE</div>
-            <h3>Glove Collection</h3>
-            <p>ニトリル・ラテックス・PVC を比較</p>
+          <div class="hero-bg blue glove-bg">
+            <div class="poster-tag">GLOVE</div>
+            <div class="poster-copy">
+              <small>comparison guide</small>
+              <h3>グローブ特集</h3>
+              <p>ニトリル・ラテックス・PVC を比較</p>
+            </div>
           </div>
         </div>
 
@@ -91,7 +109,6 @@
           <div class="shortcut-icon">{{ item.icon }}</div>
           <div class="shortcut-text">
             <strong>{{ item.title }}</strong>
-            <span>{{ item.sub }}</span>
           </div>
           <div class="shortcut-arrow">›</div>
         </article>
@@ -104,7 +121,7 @@
         <button>新着情報一覧はこちら</button>
       </div>
 
-      <div class="news-list page-card">
+      <div class="news-list page-card slim-card">
         <article class="news-item" v-for="item in newsList" :key="item.title">
           <div class="news-date">{{ item.date }}</div>
           <div class="news-body">
@@ -125,7 +142,10 @@
       <div class="sale-grid">
         <article class="sale-card" v-for="item in saleProducts" :key="item.name">
           <div class="unit-price">1枚/{{ item.unitPrice }}円</div>
-          <div class="sale-image">{{ item.code }}</div>
+          <div class="sale-image">
+            <div class="pack-top"></div>
+            <div class="pack-body">{{ item.code }}</div>
+          </div>
           <div class="spec-tags">
             <span v-for="tag in item.tags" :key="tag">{{ tag }}</span>
           </div>
@@ -155,6 +175,7 @@
             <p>{{ item.desc }}</p>
             <button>詳しくはこちら</button>
           </div>
+          <div class="helpful-figure">{{ item.figure }}</div>
         </article>
       </div>
     </section>
@@ -181,7 +202,7 @@
       <div class="section-head-line info-gap">
         <h2>最近見た商品</h2>
       </div>
-      <div class="recent-box page-card">
+      <div class="recent-box page-card slim-card">
         <p>最近見た商品がありません</p>
         <button>履歴を残さない</button>
       </div>
@@ -247,16 +268,16 @@
 
 <script setup>
 const shortcuts = [
-  { icon: '特', title: 'グローブ特集', sub: 'おすすめ特集' },
-  { icon: '手', title: 'グローブ', sub: '定番商品一覧' },
-  { icon: '口', title: 'マスク', sub: '感染予防用品' },
-  { icon: '前', title: 'エプロン', sub: '防水・使い捨て' },
-  { icon: '菌', title: '滅菌・感染予防', sub: '衛生対策用品' },
-  { icon: '衛', title: 'インスツルメント・衛生材料', sub: '診療補助用品' },
-  { icon: '美', title: 'ヘアーサロン & BODYアート', sub: '関連用品' },
-  { icon: '日', title: '日用品 他', sub: '施設向け用品' },
-  { icon: '処', title: '在庫処分', sub: 'お買い得商品' },
-  { icon: 'セ', title: 'セール商品', sub: '期間限定価格' }
+  { icon: '特', title: 'グローブ特集' },
+  { icon: '手', title: 'グローブ' },
+  { icon: '口', title: 'マスク' },
+  { icon: '前', title: 'エプロン' },
+  { icon: '菌', title: '滅菌・感染予防' },
+  { icon: '衛', title: 'インスツルメント・衛生材料' },
+  { icon: '美', title: 'ヘアーサロン & BODYアート' },
+  { icon: '日', title: '日用品 他' },
+  { icon: '処', title: '在庫処分' },
+  { icon: 'セ', title: 'セール商品' }
 ]
 
 const newsList = [
@@ -274,12 +295,12 @@ const saleProducts = [
 ]
 
 const helpfulBanners = [
-  { kicker: 'LATEX GLOVE', title: 'ラテックス手袋の特徴と選び方', desc: '素材の特性と使い分けをわかりやすく整理。', theme: 'theme-cream' },
-  { kicker: 'NITRILE GLOVE', title: 'ニトリル手袋の特徴と選び方', desc: '用途別に適した商品選定の考え方を案内。', theme: 'theme-blue' },
-  { kicker: 'HOW TO CHOOSE', title: '手袋の正しい選び方', desc: 'サイズ・用途・素材から比較して選定。', theme: 'theme-pink' },
-  { kicker: 'TROUBLE CARE', title: '手の痒みの原因と対策', desc: '現場で起こりやすい悩みと対策情報を整理。', theme: 'theme-green' },
-  { kicker: 'SET SALE', title: 'お得なセット販売はこちら', desc: 'まとめ買い・法人導入向けのセット提案。', theme: 'theme-orange' },
-  { kicker: 'MASK GUIDE', title: '医療用マスク素材の基礎知識', desc: '性能や着用感の違いを比較しやすく整理。', theme: 'theme-purple' }
+  { kicker: 'LATEX GLOVE', title: 'ラテックス手袋の特徴と選び方', desc: '素材の特性と使い分けをわかりやすく整理。', theme: 'theme-cream', figure: 'L' },
+  { kicker: 'NITRILE GLOVE', title: 'ニトリル手袋の特徴と選び方', desc: '用途別に適した商品選定の考え方を案内。', theme: 'theme-blue', figure: 'N' },
+  { kicker: 'HOW TO CHOOSE', title: '手袋の正しい選び方', desc: 'サイズ・用途・素材から比較して選定。', theme: 'theme-pink', figure: 'Q' },
+  { kicker: 'TROUBLE CARE', title: '手の痒みの原因と対策', desc: '現場で起こりやすい悩みと対策情報を整理。', theme: 'theme-green', figure: 'C' },
+  { kicker: 'SET SALE', title: 'お得なセット販売はこちら', desc: 'まとめ買い・法人導入向けのセット提案。', theme: 'theme-orange', figure: 'S' },
+  { kicker: 'MASK GUIDE', title: '医療用マスク素材の基礎知識', desc: '性能や着用感の違いを比較しやすく整理。', theme: 'theme-purple', figure: 'M' }
 ]
 </script>
 
@@ -315,9 +336,9 @@ const helpfulBanners = [
 .header-main {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 28px;
+  gap: 34px;
   align-items: center;
-  padding: 26px 0 18px;
+  padding: 24px 0 18px;
 }
 
 .logo-block {
@@ -327,15 +348,15 @@ const helpfulBanners = [
 }
 
 .logo-mark {
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
   border: 2px solid #0b5cab;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #0b5cab;
   font-weight: 800;
-  font-size: 28px;
+  font-size: 30px;
 }
 
 .logo-copy h1 {
@@ -347,9 +368,32 @@ const helpfulBanners = [
 }
 
 .logo-copy p {
-  margin: 8px 0 0;
-  color: #6a7f92;
-  font-size: 13px;
+  margin: 6px 0 2px;
+  color: #5a7389;
+  font-size: 12px;
+}
+
+.logo-copy small {
+  color: #8497a8;
+  font-size: 12px;
+}
+
+.search-area {
+  display: grid;
+  gap: 10px;
+}
+
+.search-keywords {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #7e92a3;
+  font-size: 12px;
+}
+
+.search-keywords a {
+  color: #0b5cab;
+  text-decoration: none;
 }
 
 .search-block {
@@ -358,15 +402,14 @@ const helpfulBanners = [
   border: 1px solid #d8e5ef;
   border-radius: 999px;
   overflow: hidden;
-  max-width: 540px;
-  justify-self: center;
   width: 100%;
+  background: #fff;
 }
 
 .search-block input {
   flex: 1;
   border: none;
-  padding: 14px 18px;
+  padding: 15px 18px;
   font: inherit;
   outline: none;
 }
@@ -375,7 +418,7 @@ const helpfulBanners = [
   border: none;
   background: #0b5cab;
   color: #fff;
-  padding: 14px 22px;
+  padding: 15px 24px;
   cursor: pointer;
   font-weight: 700;
 }
@@ -394,8 +437,8 @@ const helpfulBanners = [
 }
 
 .icon-circle {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid #cfdeea;
   display: grid;
@@ -418,88 +461,152 @@ const helpfulBanners = [
 }
 
 .nav-tabs a {
+  position: relative;
   color: #274764;
   text-decoration: none;
   font-weight: 600;
 }
 
+.nav-tabs a.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -16px;
+  height: 3px;
+  border-radius: 999px;
+  background: #0b5cab;
+}
+
 .hero-wrap {
-  padding: 28px 0 24px;
+  padding: 32px 0 24px;
   background: #fff;
 }
 
 .hero-stage {
   display: grid;
-  grid-template-columns: auto 0.82fr 1.2fr 0.82fr auto;
+  grid-template-columns: auto 0.78fr 1.22fr 0.78fr auto;
   gap: 18px;
   align-items: center;
 }
 
 .hero-card {
-  border-radius: 28px;
+  border-radius: 30px;
   overflow: hidden;
-  height: 360px;
-  box-shadow: 0 12px 32px rgba(19, 49, 79, 0.08);
+  height: 392px;
+  box-shadow: 0 16px 40px rgba(19, 49, 79, 0.1);
 }
 
 .hero-card.side {
   transform: scale(0.96);
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 .hero-bg {
+  position: relative;
   height: 100%;
-  padding: 34px 28px;
+  padding: 28px;
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
-.hero-bg.coral {
-  background: linear-gradient(135deg, #f4b3ae, #eb7279 70%);
+.hero-bg::before,
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
 }
 
-.hero-bg.blue {
-  background: linear-gradient(135deg, #5ec3e7, #1f6fb9 70%);
+.hero-bg::before {
+  width: 160px;
+  height: 160px;
+  right: -20px;
+  top: -20px;
 }
 
-.hero-bg.mint {
-  background: linear-gradient(135deg, #b8e5d2, #46b39d 70%);
+.hero-bg::after {
+  width: 120px;
+  height: 120px;
+  left: -20px;
+  bottom: -20px;
 }
 
-.hero-kicker {
+.poster-tag {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
   font-size: 12px;
   letter-spacing: 1px;
-  opacity: 0.9;
-  margin-bottom: 10px;
 }
 
-.hero-card.main h2 {
-  margin: 0 0 10px;
-  font-size: 42px;
-  line-height: 1.1;
+.poster-tag.sale {
+  background: rgba(255, 255, 255, 0.26);
 }
 
-.hero-card.side h3 {
-  margin: 0 0 10px;
-  font-size: 28px;
+.poster-copy {
+  position: relative;
+  z-index: 1;
 }
 
-.hero-bg p {
+.poster-copy small {
+  display: block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.95;
+}
+
+.poster-copy h2,
+.poster-copy h3 {
+  margin: 0 0 12px;
+  line-height: 1.08;
+}
+
+.poster-copy h2 {
+  font-size: 48px;
+}
+
+.poster-copy h3 {
+  font-size: 30px;
+}
+
+.poster-copy p {
   margin: 0;
   font-size: 16px;
+  max-width: 92%;
+}
+
+.spring-bg {
+  background: linear-gradient(135deg, #f4c8be, #ef7e86 58%, #e35f70);
+}
+
+.glove-bg {
+  background: linear-gradient(135deg, #8dd7f2, #2f90d0 62%, #1d68b6);
+}
+
+.apron-bg {
+  background: linear-gradient(135deg, #bfe7d8, #59c0a6 62%, #1d8f7e);
 }
 
 .carousel-arrow {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   border: 1px solid #d9e7f1;
   background: #fff;
   color: #6b8093;
   font-size: 28px;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgba(19, 49, 79, 0.08);
 }
 
 .dots {
@@ -540,13 +647,14 @@ const helpfulBanners = [
   gap: 14px;
   align-items: center;
   border: 1px solid #e2ebf2;
+  min-height: 80px;
 }
 
 .shortcut-icon {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: #edf7ff;
+  background: linear-gradient(135deg, #edf7ff, #dceffc);
   color: #0b5cab;
   display: grid;
   place-items: center;
@@ -556,14 +664,8 @@ const helpfulBanners = [
 .shortcut-text strong {
   display: block;
   color: #173653;
-  font-size: 15px;
-}
-
-.shortcut-text span {
-  display: block;
-  margin-top: 4px;
-  color: #6b8195;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.35;
 }
 
 .shortcut-arrow {
@@ -579,7 +681,8 @@ const helpfulBanners = [
   padding: 44px 0 0;
 }
 
-.section-head-line {
+.section-head-line,
+.news-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -605,12 +708,9 @@ const helpfulBanners = [
   cursor: pointer;
 }
 
-.news-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
+.slim-card {
+  box-shadow: none;
+  border: 1px solid #e6eef4;
 }
 
 .news-list {
@@ -662,9 +762,9 @@ const helpfulBanners = [
 
 .sale-card {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 18px;
-  box-shadow: 0 12px 28px rgba(19, 49, 79, 0.06);
+  box-shadow: 0 10px 28px rgba(19, 49, 79, 0.05);
   border: 1px solid #e7eef4;
 }
 
@@ -679,15 +779,35 @@ const helpfulBanners = [
 }
 
 .sale-image {
+  position: relative;
   margin-top: 16px;
-  height: 180px;
+  height: 200px;
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #edf7ff, #e3f3f1);
+  background: linear-gradient(180deg, #f6fbff, #ecf5fb);
+}
+
+.pack-top {
+  position: absolute;
+  top: 28px;
+  width: 72px;
+  height: 16px;
+  border-radius: 999px;
+  background: #d9e8f4;
+}
+
+.pack-body {
+  width: 120px;
+  height: 138px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #f4fbff, #bfe0f5 70%, #90c5ea);
+  display: grid;
+  place-items: center;
   color: #0b5cab;
   font-size: 34px;
   font-weight: 800;
+  box-shadow: 0 8px 18px rgba(31, 111, 185, 0.18);
 }
 
 .spec-tags {
@@ -762,10 +882,9 @@ const helpfulBanners = [
   overflow: hidden;
   padding: 28px;
   color: #173653;
-}
-
-.helpful-copy {
-  max-width: 72%;
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
 }
 
 .helpful-copy small {
@@ -795,6 +914,17 @@ const helpfulBanners = [
   padding: 12px 18px;
   cursor: pointer;
   font-weight: 700;
+}
+
+.helpful-figure {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  display: grid;
+  place-items: center;
+  font-size: 46px;
+  font-weight: 800;
 }
 
 .theme-cream { background: linear-gradient(135deg, #f8e7c6, #f1d19a); }
@@ -1032,8 +1162,9 @@ const helpfulBanners = [
     justify-items: center;
   }
 
+  .search-area,
   .search-block {
-    max-width: 100%;
+    width: 100%;
   }
 
   .hero-stage {
@@ -1055,7 +1186,8 @@ const helpfulBanners = [
 
   .news-item,
   .catalog-banner,
-  .footer-clone-grid {
+  .footer-clone-grid,
+  .helpful-card {
     grid-template-columns: 1fr;
   }
 
@@ -1089,10 +1221,10 @@ const helpfulBanners = [
   }
 
   .hero-card {
-    height: 280px;
+    height: 300px;
   }
 
-  .hero-card.main h2,
+  .poster-copy h2,
   .catalog-copy h2 {
     font-size: 32px;
   }
@@ -1108,10 +1240,6 @@ const helpfulBanners = [
   .recent-box {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .helpful-copy {
-    max-width: 100%;
   }
 
   .recent-box {
