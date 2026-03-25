@@ -51,9 +51,15 @@
         <div class="nav-item category-nav active">
           <a href="javascript:void(0)">商品カテゴリ</a>
           <div class="mega-menu">
-            <div class="mega-col" v-for="group in megaMenu" :key="group.title">
-              <h4>{{ group.title }}</h4>
-              <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+            <div class="mega-head">
+              <strong>商品カテゴリ一覧</strong>
+              <span>用途・素材・衛生シーンからお選びいただけます</span>
+            </div>
+            <div class="mega-grid">
+              <div class="mega-col" v-for="group in megaMenu" :key="group.title">
+                <h4>{{ group.title }}</h4>
+                <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+              </div>
             </div>
           </div>
         </div>
@@ -307,35 +313,40 @@ const megaMenu = [
 
 <style scoped>
 .home-page { background: #fff; }
-.top-notice { background: #0d4f90; color: #fff; font-size: 13px; }
-.notice-inner { min-height: 32px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.top-notice { background: #0b4c88; color: #fff; font-size: 13px; }
+.notice-inner { min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .notice-arrow { font-size: 20px; line-height: 1; }
-.header-clone { border-bottom: 1px solid #dbe7f1; background: #fff; }
-.header-main { display: grid; grid-template-columns: auto 1fr auto; gap: 34px; align-items: center; padding: 24px 0 18px; }
+.header-clone { border-bottom: 1px solid #dde8f0; background: #fff; }
+.header-main { display: grid; grid-template-columns: 320px 1fr 220px; gap: 34px; align-items: center; padding: 22px 0 16px; }
 .logo-block { display: flex; align-items: center; gap: 14px; }
-.logo-mark { width: 64px; height: 64px; border: 2px solid #0b5cab; border-radius: 50%; display: grid; place-items: center; color: #0b5cab; font-weight: 800; font-size: 30px; }
-.logo-copy h1 { margin: 0; font-size: 34px; line-height: 1; letter-spacing: 1px; color: #154c7d; }
-.logo-copy p { margin: 6px 0 2px; color: #5a7389; font-size: 12px; }
+.logo-mark { width: 68px; height: 68px; border: 2px solid #0b5cab; border-radius: 50%; display: grid; place-items: center; color: #0b5cab; font-weight: 800; font-size: 32px; background: linear-gradient(180deg, #ffffff, #f4f9fd); }
+.logo-copy h1 { margin: 0; font-size: 35px; line-height: 1; letter-spacing: 1px; color: #154c7d; font-weight: 800; }
+.logo-copy p { margin: 5px 0 1px; color: #5a7389; font-size: 11px; }
 .logo-copy small { color: #8497a8; font-size: 12px; }
 .search-area { display: grid; gap: 10px; }
 .search-keywords { display: flex; align-items: center; gap: 10px; color: #7e92a3; font-size: 12px; }
 .search-keywords a { color: #0b5cab; text-decoration: none; }
-.search-block { display: flex; align-items: center; border: 1px solid #d8e5ef; border-radius: 999px; overflow: hidden; width: 100%; background: #fff; }
+.search-block { display: flex; align-items: center; border: 1px solid #d8e5ef; border-radius: 999px; overflow: hidden; width: 100%; background: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.8); }
 .search-block input { flex: 1; border: none; padding: 15px 18px; font: inherit; outline: none; }
-.search-block button { border: none; background: #0b5cab; color: #fff; padding: 15px 24px; cursor: pointer; font-weight: 700; }
-.header-icons { display: flex; gap: 18px; }
+.search-block button { border: none; background: linear-gradient(180deg, #1766b5, #0b5cab); color: #fff; padding: 15px 24px; cursor: pointer; font-weight: 700; }
+.header-icons { display: flex; gap: 18px; justify-content: flex-end; }
 .icon-item { display: grid; justify-items: center; gap: 8px; color: #4d657b; font-size: 12px; }
 .icon-circle { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #cfdeea; display: grid; place-items: center; color: #0b5cab; background: #fff; }
 .cart .icon-circle { background: #fce8ef; border-color: #f6c7d7; color: #ce4d7b; }
-.nav-tabs { position: relative; display: flex; justify-content: center; gap: 48px; padding: 14px 0 16px; }
-.nav-item { position: relative; }
-.nav-tabs a { position: relative; color: #274764; text-decoration: none; font-weight: 600; }
+.nav-tabs { position: relative; display: flex; justify-content: center; align-items: center; gap: 52px; padding: 13px 0 14px; border-top: 1px solid #eef4f8; }
+.nav-item { position: relative; padding-bottom: 2px; }
+.nav-tabs a { position: relative; color: #274764; text-decoration: none; font-weight: 700; font-size: 15px; }
 .nav-item.active > a::after,
 .category-nav:hover > a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -16px; height: 3px; border-radius: 999px; background: #0b5cab; }
-.mega-menu { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-32%); width: 920px; background: #fff; border-top: 1px solid #dce6ef; box-shadow: 0 18px 40px rgba(23, 54, 83, 0.12); padding: 28px 32px; display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 32px; z-index: 30; }
-.category-nav:hover .mega-menu { display: grid; }
-.mega-col h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e6eef4; color: #173653; font-size: 16px; }
-.mega-col a { display: block; margin-bottom: 8px; color: #6b8093; font-size: 14px; }
+.mega-menu { position: absolute; top: calc(100% + 15px); left: 50%; transform: translateX(-20%); width: 980px; background: #fff; border: 1px solid #dfe8ef; border-top: 3px solid #0b5cab; box-shadow: 0 22px 48px rgba(23, 54, 83, 0.14); border-radius: 0 0 18px 18px; padding: 22px 28px 26px; display: none; z-index: 30; }
+.category-nav:hover .mega-menu { display: block; }
+.mega-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid #e8eef4; }
+.mega-head strong { font-size: 18px; color: #173653; }
+.mega-head span { color: #7a8fa1; font-size: 13px; }
+.mega-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 28px; }
+.mega-col { min-width: 0; }
+.mega-col h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e6eef4; color: #173653; font-size: 15px; }
+.mega-col a { display: block; margin-bottom: 9px; color: #6b8093; font-size: 14px; line-height: 1.45; }
 .hero-wrap { padding: 32px 0 24px; background: #fff; }
 .hero-stage { display: grid; grid-template-columns: auto 0.78fr 1.22fr 0.78fr auto; gap: 18px; align-items: center; }
 .hero-card { border-radius: 30px; overflow: hidden; height: 392px; box-shadow: 0 16px 40px rgba(19, 49, 79, 0.1); background: #fff; }
@@ -425,7 +436,8 @@ const megaMenu = [
   .news-item, .catalog-banner, .footer-clone-grid { grid-template-columns: 1fr; }
   .helpful-grid { grid-template-columns: 1fr; }
   .catalog-side { justify-items: start; }
-  .mega-menu { position: static; transform: none; width: 100%; box-shadow: none; border: 1px solid #e6eef4; margin-top: 12px; }
+  .mega-menu { position: static; transform: none; width: 100%; box-shadow: none; border: 1px solid #e6eef4; border-radius: 18px; margin-top: 12px; }
+  .mega-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 768px) {
   .notice-inner { padding: 6px 0; font-size: 12px; }
@@ -434,8 +446,8 @@ const megaMenu = [
   .nav-tabs { flex-wrap: wrap; gap: 20px; }
   .hero-card { height: 300px; }
   .catalog-copy h2 { font-size: 32px; }
-  .shortcut-grid, .sale-grid, .footer-links { grid-template-columns: 1fr; }
-  .news-head, .section-head-line, .recent-box { flex-direction: column; align-items: flex-start; }
+  .shortcut-grid, .sale-grid, .footer-links, .mega-grid { grid-template-columns: 1fr; }
+  .news-head, .section-head-line, .recent-box, .mega-head { flex-direction: column; align-items: flex-start; }
   .recent-box { align-items: stretch; }
 }
 </style>
