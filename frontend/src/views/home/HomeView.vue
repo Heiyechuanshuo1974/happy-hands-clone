@@ -48,10 +48,18 @@
       </div>
 
       <div class="container nav-tabs">
-        <a href="javascript:void(0)" class="active">商品カテゴリ</a>
-        <a href="javascript:void(0)">グローブ特集</a>
-        <a href="javascript:void(0)">セール商品</a>
-        <a href="javascript:void(0)">在庫処分</a>
+        <div class="nav-item category-nav active">
+          <a href="javascript:void(0)">商品カテゴリ</a>
+          <div class="mega-menu">
+            <div class="mega-col" v-for="group in megaMenu" :key="group.title">
+              <h4>{{ group.title }}</h4>
+              <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item"><a href="javascript:void(0)">グローブ特集</a></div>
+        <div class="nav-item"><a href="javascript:void(0)">セール商品</a></div>
+        <div class="nav-item"><a href="javascript:void(0)">在庫処分</a></div>
       </div>
     </section>
 
@@ -285,6 +293,16 @@ const helpfulBanners = [
   { title: 'お得なセット販売はこちら', image: helpfulSet },
   { title: '医療用マスク素材の基礎知識', image: helpfulMask }
 ]
+
+const megaMenu = [
+  { title: 'グローブ', items: ['ラテックスグローブ', 'ニトリルグローブ', 'ブラックグローブ', 'その他グローブ'] },
+  { title: 'マスク', items: ['三層マスク', '四層マスク', 'デザインマスク'] },
+  { title: 'エプロン', items: ['エンボスエプロン', 'ネックエプロン', 'エプロンその他'] },
+  { title: '滅菌・感染予防', items: ['滅菌バッグ・ロール', 'スリーブ&バリアフィルム', '手指消毒&機器除菌'] },
+  { title: 'インスツルメント・衛生材料', items: ['オーラルケア', 'デンタル&クリーナーボックス', 'トレイ&アプリケーター'] },
+  { title: 'ヘアーサロン& BODYアート', items: ['コットンタオル', 'ペーパー類', 'サロン消耗品'] },
+  { title: '日用品 他', items: ['ペーパータオル', 'ハンドソープ&洗剤', 'その他日用品'] }
+]
 </script>
 
 <style scoped>
@@ -309,9 +327,15 @@ const helpfulBanners = [
 .icon-item { display: grid; justify-items: center; gap: 8px; color: #4d657b; font-size: 12px; }
 .icon-circle { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #cfdeea; display: grid; place-items: center; color: #0b5cab; background: #fff; }
 .cart .icon-circle { background: #fce8ef; border-color: #f6c7d7; color: #ce4d7b; }
-.nav-tabs { display: flex; justify-content: center; gap: 48px; padding: 14px 0 16px; }
+.nav-tabs { position: relative; display: flex; justify-content: center; gap: 48px; padding: 14px 0 16px; }
+.nav-item { position: relative; }
 .nav-tabs a { position: relative; color: #274764; text-decoration: none; font-weight: 600; }
-.nav-tabs a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -16px; height: 3px; border-radius: 999px; background: #0b5cab; }
+.nav-item.active > a::after,
+.category-nav:hover > a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -16px; height: 3px; border-radius: 999px; background: #0b5cab; }
+.mega-menu { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-32%); width: 920px; background: #fff; border-top: 1px solid #dce6ef; box-shadow: 0 18px 40px rgba(23, 54, 83, 0.12); padding: 28px 32px; display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 32px; z-index: 30; }
+.category-nav:hover .mega-menu { display: grid; }
+.mega-col h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e6eef4; color: #173653; font-size: 16px; }
+.mega-col a { display: block; margin-bottom: 8px; color: #6b8093; font-size: 14px; }
 .hero-wrap { padding: 32px 0 24px; background: #fff; }
 .hero-stage { display: grid; grid-template-columns: auto 0.78fr 1.22fr 0.78fr auto; gap: 18px; align-items: center; }
 .hero-card { border-radius: 30px; overflow: hidden; height: 392px; box-shadow: 0 16px 40px rgba(19, 49, 79, 0.1); background: #fff; }
@@ -401,6 +425,7 @@ const helpfulBanners = [
   .news-item, .catalog-banner, .footer-clone-grid { grid-template-columns: 1fr; }
   .helpful-grid { grid-template-columns: 1fr; }
   .catalog-side { justify-items: start; }
+  .mega-menu { position: static; transform: none; width: 100%; box-shadow: none; border: 1px solid #e6eef4; margin-top: 12px; }
 }
 @media (max-width: 768px) {
   .notice-inner { padding: 6px 0; font-size: 12px; }
