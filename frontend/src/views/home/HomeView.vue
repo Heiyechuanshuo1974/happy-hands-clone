@@ -55,10 +55,15 @@
               <strong>商品カテゴリ一覧</strong>
               <span>用途・素材・衛生シーンからお選びいただけます</span>
             </div>
-            <div class="mega-grid">
-              <div class="mega-col" v-for="group in megaMenu" :key="group.title">
-                <h4>{{ group.title }}</h4>
-                <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+            <div class="mega-layout">
+              <aside class="mega-side">
+                <button v-for="item in megaSide" :key="item" class="mega-side-item">{{ item }}</button>
+              </aside>
+              <div class="mega-grid">
+                <div class="mega-col" v-for="group in megaMenu" :key="group.title">
+                  <h4>{{ group.title }}</h4>
+                  <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+                </div>
               </div>
             </div>
           </div>
@@ -301,14 +306,16 @@ const helpfulBanners = [
 ]
 
 const megaMenu = [
-  { title: 'グローブ', items: ['ラテックスグローブ', 'ニトリルグローブ', 'ブラックグローブ', 'その他グローブ'] },
-  { title: 'マスク', items: ['三層マスク', '四層マスク', 'デザインマスク'] },
-  { title: 'エプロン', items: ['エンボスエプロン', 'ネックエプロン', 'エプロンその他'] },
-  { title: '滅菌・感染予防', items: ['滅菌バッグ・ロール', 'スリーブ&バリアフィルム', '手指消毒&機器除菌'] },
-  { title: 'インスツルメント・衛生材料', items: ['オーラルケア', 'デンタル&クリーナーボックス', 'トレイ&アプリケーター'] },
-  { title: 'ヘアーサロン& BODYアート', items: ['コットンタオル', 'ペーパー類', 'サロン消耗品'] },
-  { title: '日用品 他', items: ['ペーパータオル', 'ハンドソープ&洗剤', 'その他日用品'] }
+  { title: 'グローブ', items: ['ラテックスグローブ', 'ニトリルグローブ', 'ブラックグローブ', 'ロングタイプ', 'その他グローブ'] },
+  { title: 'マスク', items: ['三層マスク', '四層マスク', '個包装マスク', 'デザインマスク'] },
+  { title: 'エプロン', items: ['エンボスエプロン', 'ネックエプロン', '袖付きエプロン', 'エプロンその他'] },
+  { title: '滅菌・感染予防', items: ['滅菌バッグ・ロール', 'スリーブ&バリアフィルム', '手指消毒&機器除菌', '飛沫感染予防用品'] },
+  { title: 'インスツルメント・衛生材料', items: ['オーラルケア', 'デンタル&クリーナーボックス', 'トレイ&アプリケーター', 'カップ&トレー関連'] },
+  { title: 'ヘアーサロン& BODYアート', items: ['コットンタオル', 'ペーパー類', 'サロン消耗品', '施術関連用品'] },
+  { title: '日用品 他', items: ['ペーパータオル', 'ハンドソープ&洗剤', 'ごみ袋', 'その他日用品'] }
 ]
+
+const megaSide = ['カテゴリ一覧', 'セール商品', '在庫処分', '新商品', '衛生材料', 'よく売れている商品']
 </script>
 
 <style scoped>
@@ -338,16 +345,20 @@ const megaMenu = [
 .nav-tabs a { position: relative; color: #274764; text-decoration: none; font-weight: 700; font-size: 15px; }
 .nav-item.active > a::after,
 .category-nav:hover > a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -16px; height: 3px; border-radius: 999px; background: #0b5cab; }
-.mega-menu { position: absolute; top: calc(100% + 15px); left: 50%; transform: translateX(-20%); width: 980px; background: #fff; border: 1px solid #dfe8ef; border-top: 3px solid #0b5cab; box-shadow: 0 22px 48px rgba(23, 54, 83, 0.14); border-radius: 0 0 18px 18px; padding: 22px 28px 26px; display: none; z-index: 30; }
+.mega-menu { position: absolute; top: calc(100% + 15px); left: 50%; transform: translateX(-23%); width: 1020px; background: #fff; border: 1px solid #dfe8ef; border-top: 3px solid #0b5cab; box-shadow: 0 22px 48px rgba(23, 54, 83, 0.14); border-radius: 0 0 18px 18px; padding: 22px 24px 26px; display: none; z-index: 30; }
 .category-nav:hover .mega-menu { display: block; }
 .mega-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid #e8eef4; }
 .mega-head strong { font-size: 18px; color: #173653; }
 .mega-head span { color: #7a8fa1; font-size: 13px; }
-.mega-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 28px; }
+.mega-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+.mega-side { display: grid; gap: 10px; align-content: start; padding-right: 10px; border-right: 1px solid #ebf1f5; }
+.mega-side-item { border: none; text-align: left; border-radius: 12px; padding: 12px 14px; background: #f5f9fc; color: #35526d; font-weight: 700; cursor: pointer; }
+.mega-side-item:first-child { background: #0b5cab; color: #fff; }
+.mega-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 28px; }
 .mega-col { min-width: 0; }
 .mega-col h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e6eef4; color: #173653; font-size: 15px; }
 .mega-col a { display: block; margin-bottom: 9px; color: #6b8093; font-size: 14px; line-height: 1.45; }
-.hero-wrap { padding: 32px 0 24px; background: #fff; }
+.hero-wrap { padding: 26px 0 24px; background: #fff; }
 .hero-stage { display: grid; grid-template-columns: auto 0.78fr 1.22fr 0.78fr auto; gap: 18px; align-items: center; }
 .hero-card { border-radius: 30px; overflow: hidden; height: 392px; box-shadow: 0 16px 40px rgba(19, 49, 79, 0.1); background: #fff; }
 .hero-card img, .helpful-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -433,11 +444,12 @@ const megaMenu = [
   .hero-card.side { display: none; }
   .carousel-arrow { display: none; }
   .shortcut-grid, .sale-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .news-item, .catalog-banner, .footer-clone-grid { grid-template-columns: 1fr; }
+  .news-item, .catalog-banner, .footer-clone-grid, .mega-layout { grid-template-columns: 1fr; }
   .helpful-grid { grid-template-columns: 1fr; }
   .catalog-side { justify-items: start; }
   .mega-menu { position: static; transform: none; width: 100%; box-shadow: none; border: 1px solid #e6eef4; border-radius: 18px; margin-top: 12px; }
   .mega-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mega-side { border-right: none; border-bottom: 1px solid #ebf1f5; padding-right: 0; padding-bottom: 12px; }
 }
 @media (max-width: 768px) {
   .notice-inner { padding: 6px 0; font-size: 12px; }
