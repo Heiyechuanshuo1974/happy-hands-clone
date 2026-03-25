@@ -115,6 +115,133 @@
         </article>
       </div>
     </section>
+
+    <section class="sale-section container">
+      <div class="section-head-line">
+        <h2>セール商品</h2>
+        <button>もっと見る</button>
+      </div>
+
+      <div class="sale-grid">
+        <article class="sale-card" v-for="item in saleProducts" :key="item.name">
+          <div class="unit-price">1枚/{{ item.unitPrice }}円</div>
+          <div class="sale-image">{{ item.code }}</div>
+          <div class="spec-tags">
+            <span v-for="tag in item.tags" :key="tag">{{ tag }}</span>
+          </div>
+          <h3>{{ item.name }}</h3>
+          <div class="price-row">
+            <span class="sale-badge">SALE</span>
+            <div class="price-group">
+              <strong>¥{{ item.salePrice }}</strong>
+              <span>税込</span>
+            </div>
+          </div>
+          <div class="origin-price">¥{{ item.originPrice }}</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="helpful-section container">
+      <div class="section-head-line info-gap">
+        <h2>安心・お得なお役立ち情報</h2>
+      </div>
+
+      <div class="helpful-grid">
+        <article class="helpful-card" v-for="item in helpfulBanners" :key="item.title" :class="item.theme">
+          <div class="helpful-copy">
+            <small>{{ item.kicker }}</small>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.desc }}</p>
+            <button>詳しくはこちら</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="catalog-section container">
+      <div class="catalog-banner">
+        <div class="catalog-free">
+          <span>FREE</span>
+          <strong>無料</strong>
+        </div>
+        <div class="catalog-copy">
+          <small>CATALOG REQUEST</small>
+          <h2>最新のカタログはこちらからご請求ください</h2>
+          <p>注目商品・定番商品をまとめたカタログをご用意しています。</p>
+        </div>
+        <div class="catalog-side">
+          <div class="catalog-book">CATALOG</div>
+          <button>カタログのご請求</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="recent-section container">
+      <div class="section-head-line info-gap">
+        <h2>最近見た商品</h2>
+      </div>
+      <div class="recent-box page-card">
+        <p>最近見た商品がありません</p>
+        <button>履歴を残さない</button>
+      </div>
+    </section>
+
+    <section class="footer-clone">
+      <div class="container footer-clone-grid">
+        <div class="calendar-card">
+          <h3>営業日カレンダー</h3>
+          <div class="calendar-box">
+            <div class="calendar-header">2026年 3月</div>
+            <div class="calendar-week">
+              <span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span>日</span>
+            </div>
+            <div class="calendar-days">
+              <span v-for="day in 31" :key="day" :class="{ holiday: day % 7 === 0 || day % 6 === 0 }">{{ day }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-center">
+          <div class="footer-brand">
+            <div class="footer-brand-mark">H</div>
+            <div>
+              <strong>HAPPY HANDS</strong>
+              <p>医療・歯科衛生用品オンラインショップ</p>
+            </div>
+          </div>
+
+          <div class="social-row">
+            <span>LINE</span>
+            <span>Instagram</span>
+          </div>
+
+          <div class="footer-links">
+            <a href="javascript:void(0)">ご利用ガイド</a>
+            <a href="javascript:void(0)">プライバシーポリシー</a>
+            <a href="javascript:void(0)">よくあるご質問</a>
+            <a href="javascript:void(0)">特定商取引法に基づく表記</a>
+            <a href="javascript:void(0)">お問い合わせ</a>
+            <a href="javascript:void(0)">利用規約</a>
+            <a href="javascript:void(0)">会社概要</a>
+            <a href="javascript:void(0)">ブログ</a>
+          </div>
+        </div>
+
+        <div class="footer-contact-card">
+          <div class="contact-panel">
+            <small>お電話でのご注文</small>
+            <strong>087-870-7335</strong>
+            <p>受付時間 : 9:00 ～ 18:00 [平日]</p>
+          </div>
+          <div class="contact-panel fax">
+            <small>FAXでのご注文</small>
+            <strong>0120-997-002</strong>
+            <p>24時間受付</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -137,6 +264,22 @@ const newsList = [
   { date: '2026.03.03', title: '春のおすすめキャンペーン掲載開始のお知らせ', update: '2026.03.03' },
   { date: '2026.02.28', title: '一部商品の価格改定についてのご案内', update: '2026.02.28' },
   { date: '2026.02.14', title: '新規会員登録キャンペーンのお知らせ', update: '2026.02.14' }
+]
+
+const saleProducts = [
+  { code: 'S01', unitPrice: '4.48', name: '使い捨てニトリルグローブ ブルー', tags: ['100枚入', 'SS / S / M / L'], salePrice: '448', originPrice: '498' },
+  { code: 'S02', unitPrice: '6.20', name: '医療用マスク 3層構造タイプ', tags: ['50枚入', 'ホワイト'], salePrice: '620', originPrice: '780' },
+  { code: 'S03', unitPrice: '8.90', name: 'ディスポエプロン 防水タイプ', tags: ['30枚入', 'フリーサイズ'], salePrice: '890', originPrice: '1,080' },
+  { code: 'S04', unitPrice: '12.80', name: '滅菌パウチ ベーシックモデル', tags: ['200枚入', '複数サイズ'], salePrice: '1,280', originPrice: '1,580' }
+]
+
+const helpfulBanners = [
+  { kicker: 'LATEX GLOVE', title: 'ラテックス手袋の特徴と選び方', desc: '素材の特性と使い分けをわかりやすく整理。', theme: 'theme-cream' },
+  { kicker: 'NITRILE GLOVE', title: 'ニトリル手袋の特徴と選び方', desc: '用途別に適した商品選定の考え方を案内。', theme: 'theme-blue' },
+  { kicker: 'HOW TO CHOOSE', title: '手袋の正しい選び方', desc: 'サイズ・用途・素材から比較して選定。', theme: 'theme-pink' },
+  { kicker: 'TROUBLE CARE', title: '手の痒みの原因と対策', desc: '現場で起こりやすい悩みと対策情報を整理。', theme: 'theme-green' },
+  { kicker: 'SET SALE', title: 'お得なセット販売はこちら', desc: 'まとめ買い・法人導入向けのセット提案。', theme: 'theme-orange' },
+  { kicker: 'MASK GUIDE', title: '医療用マスク素材の基礎知識', desc: '性能や着用感の違いを比較しやすく整理。', theme: 'theme-purple' }
 ]
 </script>
 
@@ -428,8 +571,38 @@ const newsList = [
   font-size: 20px;
 }
 
-.news-section {
-  padding: 44px 0 64px;
+.news-section,
+.sale-section,
+.helpful-section,
+.catalog-section,
+.recent-section {
+  padding: 44px 0 0;
+}
+
+.section-head-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.section-head-line h2,
+.news-head h2 {
+  margin: 0;
+  font-size: 32px;
+  color: #163450;
+}
+
+.section-head-line button,
+.news-head button,
+.recent-box button {
+  border: 1px solid #d2e1ec;
+  background: #fff;
+  color: #31506b;
+  border-radius: 999px;
+  padding: 12px 18px;
+  cursor: pointer;
 }
 
 .news-head {
@@ -438,21 +611,6 @@ const newsList = [
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 20px;
-}
-
-.news-head h2 {
-  margin: 0;
-  font-size: 32px;
-  color: #163450;
-}
-
-.news-head button {
-  border: 1px solid #d2e1ec;
-  background: #fff;
-  color: #31506b;
-  border-radius: 999px;
-  padding: 12px 18px;
-  cursor: pointer;
 }
 
 .news-list {
@@ -496,6 +654,378 @@ const newsList = [
   color: #173653;
 }
 
+.sale-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.sale-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(19, 49, 79, 0.06);
+  border: 1px solid #e7eef4;
+}
+
+.unit-price {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #ffe7ef;
+  color: #d84d7f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sale-image {
+  margin-top: 16px;
+  height: 180px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #edf7ff, #e3f3f1);
+  color: #0b5cab;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.spec-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.spec-tags span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f2f6fa;
+  color: #698196;
+  font-size: 12px;
+}
+
+.sale-card h3 {
+  margin: 14px 0 12px;
+  font-size: 18px;
+  color: #18324a;
+  line-height: 1.4;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sale-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff1f5;
+  color: #d54b7d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.price-group strong {
+  font-size: 28px;
+  color: #d54b7d;
+}
+
+.price-group span {
+  margin-left: 6px;
+  color: #7a8d9f;
+  font-size: 12px;
+}
+
+.origin-price {
+  margin-top: 8px;
+  color: #9aa9b7;
+  text-decoration: line-through;
+}
+
+.info-gap {
+  margin-bottom: 22px;
+}
+
+.helpful-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.helpful-card {
+  min-height: 220px;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 28px;
+  color: #173653;
+}
+
+.helpful-copy {
+  max-width: 72%;
+}
+
+.helpful-copy small {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.helpful-copy h3 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.helpful-copy p {
+  margin: 0 0 18px;
+  color: rgba(23, 54, 83, 0.82);
+}
+
+.helpful-copy button,
+.catalog-side button {
+  border: none;
+  background: #fff;
+  color: #173653;
+  border-radius: 999px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.theme-cream { background: linear-gradient(135deg, #f8e7c6, #f1d19a); }
+.theme-blue { background: linear-gradient(135deg, #dff5ff, #8ecff0); }
+.theme-pink { background: linear-gradient(135deg, #ffe0ea, #f5a9c8); }
+.theme-green { background: linear-gradient(135deg, #dff5e4, #9ad6a5); }
+.theme-orange { background: linear-gradient(135deg, #ffe9cc, #f9b86f); }
+.theme-purple { background: linear-gradient(135deg, #ece5ff, #b4a3f3); }
+
+.catalog-banner {
+  border-radius: 26px;
+  background: linear-gradient(135deg, #0d5ca9, #1b8bc9 70%);
+  color: #fff;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 160px 1fr 240px;
+  gap: 24px;
+  align-items: center;
+}
+
+.catalog-free {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.catalog-free span {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.catalog-free strong {
+  font-size: 38px;
+}
+
+.catalog-copy small {
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.catalog-copy h2 {
+  margin: 10px 0 12px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.catalog-copy p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.catalog-side {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.catalog-book {
+  width: 140px;
+  height: 180px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f0f7ff, #d4e7f7);
+  color: #0b5cab;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.recent-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.recent-box p {
+  margin: 0;
+  color: #6f8699;
+}
+
+.footer-clone {
+  margin-top: 56px;
+  background: #f6f9fc;
+  padding: 44px 0 50px;
+  border-top: 1px solid #e3edf4;
+}
+
+.footer-clone-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  gap: 24px;
+}
+
+.calendar-card,
+.footer-center,
+.footer-contact-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 22px;
+  border: 1px solid #e6eef4;
+}
+
+.calendar-card h3 {
+  margin: 0 0 14px;
+  color: #173653;
+}
+
+.calendar-box {
+  border-radius: 18px;
+  background: #f7fbfe;
+  padding: 16px;
+}
+
+.calendar-header {
+  text-align: center;
+  font-weight: 700;
+  color: #173653;
+  margin-bottom: 12px;
+}
+
+.calendar-week,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-week span,
+.calendar-days span {
+  display: grid;
+  place-items: center;
+  min-height: 28px;
+  font-size: 12px;
+  color: #60788e;
+}
+
+.calendar-days span.holiday {
+  color: #d44f78;
+  font-weight: 700;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-brand-mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #0b5cab;
+  color: #0b5cab;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.footer-brand strong {
+  color: #173653;
+}
+
+.footer-brand p {
+  margin: 4px 0 0;
+  color: #6f8699;
+  font-size: 13px;
+}
+
+.social-row {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.social-row span {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #edf6ff;
+  color: #0b5cab;
+  font-weight: 700;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+
+.footer-links a {
+  color: #456079;
+  text-decoration: none;
+}
+
+.footer-contact-card {
+  display: grid;
+  gap: 16px;
+}
+
+.contact-panel {
+  border-radius: 18px;
+  background: #edf7ff;
+  padding: 18px;
+}
+
+.contact-panel small {
+  display: block;
+  color: #5d7a93;
+}
+
+.contact-panel strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 30px;
+  color: #0b5cab;
+}
+
+.contact-panel p {
+  margin: 8px 0 0;
+  color: #5f768c;
+}
+
+.contact-panel.fax {
+  background: #fff3f7;
+}
+
 @media (max-width: 1100px) {
   .header-main {
     grid-template-columns: 1fr;
@@ -518,12 +1048,23 @@ const newsList = [
     display: none;
   }
 
-  .shortcut-grid {
+  .shortcut-grid,
+  .sale-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .news-item {
+  .news-item,
+  .catalog-banner,
+  .footer-clone-grid {
     grid-template-columns: 1fr;
+  }
+
+  .helpful-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-side {
+    justify-items: start;
   }
 }
 
@@ -551,17 +1092,30 @@ const newsList = [
     height: 280px;
   }
 
-  .hero-card.main h2 {
+  .hero-card.main h2,
+  .catalog-copy h2 {
     font-size: 32px;
   }
 
-  .shortcut-grid {
+  .shortcut-grid,
+  .sale-grid,
+  .footer-links {
     grid-template-columns: 1fr;
   }
 
-  .news-head {
+  .news-head,
+  .section-head-line,
+  .recent-box {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .helpful-copy {
+    max-width: 100%;
+  }
+
+  .recent-box {
+    align-items: stretch;
   }
 }
 </style>
