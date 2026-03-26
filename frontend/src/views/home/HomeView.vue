@@ -7,7 +7,7 @@
       </div>
     </section>
 
-    <section class="header-clone">
+    <section class="header-clone" @mouseleave="scheduleMegaClose">
       <div class="container header-main">
         <div class="logo-block">
           <div class="logo-mark-wrap">
@@ -42,73 +42,62 @@
       </div>
 
       <div class="container nav-tabs">
-        <div class="nav-item category-nav active" @mouseleave="activeMega = 0">
+        <div class="nav-item category-nav active" @mouseenter="openMega">
           <a href="javascript:void(0)">商品カテゴリ</a>
-          <div class="mega-menu">
-            <div class="mega-head">
-              <strong>商品カテゴリ一覧</strong>
-              <span>用途・素材・衛生シーンからお選びいただけます</span>
-            </div>
-            <div class="mega-layout">
-              <aside class="mega-side">
-                <button
-                  v-for="(item, index) in megaSide"
-                  :key="item.label"
-                  class="mega-side-item"
-                  :class="{ active: activeMega === index }"
-                  @mouseenter="activeMega = index"
-                >
-                  {{ item.label }}
-                </button>
-              </aside>
-              <div class="mega-content">
-                <div class="mega-grid" v-if="activeMegaItem.groups">
-                  <div class="mega-col" v-for="group in activeMegaItem.groups" :key="group.title">
-                    <h4>{{ group.title }}</h4>
-                    <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
-                  </div>
-                </div>
-                <div class="mega-feature" v-else>
-                  <div class="mega-feature-card">
-                    <small>{{ activeMegaItem.kicker }}</small>
-                    <h4>{{ activeMegaItem.title }}</h4>
-                    <p>{{ activeMegaItem.desc }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="nav-item"><a href="javascript:void(0)">グローブ特集</a></div>
         <div class="nav-item"><a href="javascript:void(0)">セール商品</a></div>
         <div class="nav-item"><a href="javascript:void(0)">在庫処分</a></div>
       </div>
+
+      <div
+        class="mega-overlay"
+        v-show="megaOpen"
+        @mouseenter="cancelMegaClose"
+        @mouseleave="scheduleMegaClose"
+      >
+        <div class="mega-panel">
+          <div class="container mega-panel-inner">
+            <div class="mega-grid-full">
+              <div class="mega-column" v-for="group in megaCategories" :key="group.title">
+                <h4>{{ group.title }}</h4>
+                <a href="javascript:void(0)" v-for="item in group.items" :key="item">{{ item }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="hero-wrap">
-      <div class="container hero-stage">
-        <button class="carousel-arrow left">‹</button>
+    <section class="hero-wrap" @mouseenter="pauseAutoplay" @mouseleave="resumeAutoplay">
+      <div class="hero-carousel-shell">
+        <button class="carousel-arrow left" @click="scrollPrev" aria-label="前へ">‹</button>
 
-        <div class="hero-card side fade-left">
-          <img :src="heroApron" alt="apron banner" />
+        <div class="hero-viewport" ref="emblaRef" :style="{ '--hero-peek': `${heroPeek}px` }">
+          <div class="hero-track">
+            <article
+              v-for="(slide, index) in heroSlides"
+              :key="slide.id"
+              class="hero-slide-card"
+              :class="slide.theme"
+            >
+              <img :src="slide.image" :alt="slide.title" />
+            </article>
+          </div>
         </div>
 
-        <div class="hero-card main">
-          <img :src="heroSale" alt="sale banner" />
-        </div>
-
-        <div class="hero-card side fade-right">
-          <img :src="heroGlove" alt="glove banner" />
-        </div>
-
-        <button class="carousel-arrow right">›</button>
+        <button class="carousel-arrow right" @click="scrollNext" aria-label="次へ">›</button>
       </div>
 
       <div class="container dots">
-        <span></span>
-        <span class="active"></span>
-        <span></span>
-        <span></span>
+        <button
+          v-for="(_, index) in heroSlides"
+          :key="index"
+          class="dot-btn"
+          :class="{ active: selectedIndex === index }"
+          :aria-label="`slide ${index + 1}`"
+          @click="scrollTo(index)"
+        ></button>
       </div>
     </section>
 
@@ -270,7 +259,8 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import useEmblaCarousel from 'embla-carousel-vue'
 import heroSale from '../../assets/home/hero-sale.svg'
 import heroApron from '../../assets/home/hero-apron.svg'
 import heroGlove from '../../assets/home/hero-glove.svg'
@@ -285,6 +275,27 @@ const headerIcons = [
   { icon: '人', label: 'マイページ', theme: '' },
   { icon: '履', label: '購入履歴', theme: '' },
   { icon: 'カ', label: 'カート', theme: 'cart' }
+]
+
+const heroSlides = [
+  { id: 'sale', title: 'SPRING SALE', image: heroSale, theme: 'theme-sale' },
+  { id: 'apron', title: 'APRON FEATURE', image: heroApron, theme: 'theme-apron' },
+  { id: 'glove', title: 'GLOVE LINEUP', image: heroGlove, theme: 'theme-glove' },
+  { id: 'sale-2', title: 'SPRING SALE 2', image: heroSale, theme: 'theme-sale' },
+  { id: 'glove-2', title: 'GLOVE LINEUP 2', image: heroGlove, theme: 'theme-glove' },
+  { id: 'apron-2', title: 'APRON FEATURE 2', image: heroApron, theme: 'theme-apron' },
+  { id: 'sale-3', title: 'SPRING SALE 3', image: heroSale, theme: 'theme-sale' },
+  { id: 'glove-3', title: 'GLOVE LINEUP 3', image: heroGlove, theme: 'theme-glove' }
+]
+
+const megaCategories = [
+  { title: 'グローブ', items: ['ラテックスグローブ', 'ニトリルグローブ', 'ブラックグローブ', 'その他グローブ'] },
+  { title: 'マスク', items: ['三層マスク', '四層マスク', 'デザインマスク'] },
+  { title: 'エプロン', items: ['エンボスエプロン', 'ネックエプロン', 'エプロンその他'] },
+  { title: '滅菌・感染予防', items: ['滅菌バッグ・ロール', 'スリーブ&バリアフィルム', 'シールド&ゴーグル他', '手指消毒&機器除菌', '不織布ガーゼ', 'コットン製品&綿球'] },
+  { title: 'インスツルメント・衛生材料', items: ['オーラルケア', 'デンチャー&クリーナーボックス', 'トレイ&アプリケーター&薬袋'] },
+  { title: 'ヘアーサロン＆BODYアート', items: ['コットンタオル', 'ペーパー類（ディスポーザブル）', 'サロン消耗品'] },
+  { title: '日用品 他', items: ['ペーパータオル', 'ハンドソープ&洗剤・漂白剤', 'その他日用品'] }
 ]
 
 const shortcuts = [
@@ -323,28 +334,104 @@ const helpfulBanners = [
   { title: '医療用マスク素材の基礎知識', image: helpfulMask }
 ]
 
-const megaSide = [
-  {
-    label: 'カテゴリ一覧',
-    groups: [
-      { title: 'グローブ', items: ['ラテックスグローブ', 'ニトリルグローブ', 'ブラックグローブ', 'ロングタイプ', 'その他グローブ'] },
-      { title: 'マスク', items: ['三層マスク', '四層マスク', '個包装マスク', 'デザインマスク'] },
-      { title: 'エプロン', items: ['エンボスエプロン', 'ネックエプロン', '袖付きエプロン', 'エプロンその他'] },
-      { title: '滅菌・感染予防', items: ['滅菌バッグ・ロール', 'スリーブ&バリアフィルム', '手指消毒&機器除菌', '飛沫感染予防用品'] },
-      { title: 'インスツルメント・衛生材料', items: ['オーラルケア', 'デンタル&クリーナーボックス', 'トレイ&アプリケーター', 'カップ&トレー関連'] },
-      { title: 'ヘアーサロン& BODYアート', items: ['コットンタオル', 'ペーパー類', 'サロン消耗品', '施術関連用品'] },
-      { title: '日用品 他', items: ['ペーパータオル', 'ハンドソープ&洗剤', 'ごみ袋', 'その他日用品'] }
-    ]
-  },
-  { label: 'セール商品', kicker: 'SALE', title: 'セール商品をまとめてチェック', desc: '期間限定価格や数量限定商品をすぐ探せます。' },
-  { label: '在庫処分', kicker: 'STOCK CLEARANCE', title: '在庫処分コーナー', desc: '在庫限りのお買い得商品を一覧で確認できます。' },
-  { label: '新商品', kicker: 'NEW ITEMS', title: '新商品ピックアップ', desc: '新たに入荷した商品やおすすめ新着を掲載します。' },
-  { label: '衛生材料', kicker: 'HYGIENE', title: '衛生材料カテゴリ', desc: '現場でよく使う衛生関連商材をまとめています。' },
-  { label: 'よく売れている商品', kicker: 'BEST SELLERS', title: '人気商品ランキング', desc: '売れ筋・定番商品を優先して確認できます。' }
-]
+const megaOpen = ref(false)
+let megaCloseTimer = null
+let autoplayTimer = null
+const selectedIndex = ref(0)
+const heroPeek = 150
 
-const activeMega = ref(0)
-const activeMegaItem = computed(() => megaSide[activeMega.value])
+const [emblaRef, emblaApi] = useEmblaCarousel({
+  loop: true,
+  align: 'center',
+  skipSnaps: false,
+  dragFree: false,
+  containScroll: 'trimSnaps'
+})
+
+const openMega = () => {
+  cancelMegaClose()
+  megaOpen.value = true
+}
+
+const scheduleMegaClose = () => {
+  cancelMegaClose()
+  megaCloseTimer = window.setTimeout(() => {
+    megaOpen.value = false
+  }, 90)
+}
+
+const cancelMegaClose = () => {
+  if (megaCloseTimer) {
+    window.clearTimeout(megaCloseTimer)
+    megaCloseTimer = null
+  }
+}
+
+const onSelect = () => {
+  if (!emblaApi.value) return
+  selectedIndex.value = emblaApi.value.selectedScrollSnap()
+}
+
+const scrollPrev = () => {
+  emblaApi.value?.scrollPrev()
+  restartAutoplay()
+}
+
+const scrollNext = () => {
+  emblaApi.value?.scrollNext()
+  restartAutoplay()
+}
+
+const scrollTo = (index) => {
+  emblaApi.value?.scrollTo(index)
+  restartAutoplay()
+}
+
+const stopAutoplay = () => {
+  if (autoplayTimer) {
+    window.clearInterval(autoplayTimer)
+    autoplayTimer = null
+  }
+}
+
+const startAutoplay = () => {
+  stopAutoplay()
+  autoplayTimer = window.setInterval(() => {
+    emblaApi.value?.scrollNext()
+  }, 4200)
+}
+
+const pauseAutoplay = () => {
+  stopAutoplay()
+}
+
+const resumeAutoplay = () => {
+  startAutoplay()
+}
+
+const restartAutoplay = () => {
+  startAutoplay()
+}
+
+onMounted(() => {
+  const waitEmbla = window.setInterval(() => {
+    if (!emblaApi.value) return
+    window.clearInterval(waitEmbla)
+    onSelect()
+    emblaApi.value.on('select', onSelect)
+    startAutoplay()
+  }, 50)
+
+  window.setTimeout(() => {
+    window.clearInterval(waitEmbla)
+  }, 3000)
+})
+
+onBeforeUnmount(() => {
+  stopAutoplay()
+  cancelMegaClose()
+  emblaApi.value?.off('select', onSelect)
+})
 </script>
 
 <style scoped>
@@ -352,7 +439,7 @@ const activeMegaItem = computed(() => megaSide[activeMega.value])
 .top-notice { background: #0b4c88; color: #fff; font-size: 13px; }
 .notice-inner { min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .notice-arrow { font-size: 20px; line-height: 1; }
-.header-clone { border-bottom: 1px solid #dde8f0; background: #fff; }
+.header-clone { position: relative; z-index: 30; border-bottom: 1px solid #dde8f0; background: #fff; }
 .header-main { display: grid; grid-template-columns: 320px 1fr 220px; gap: 34px; align-items: center; padding: 22px 0 16px; }
 .logo-block { display: flex; align-items: center; gap: 14px; }
 .logo-mark-wrap { width: 78px; height: 78px; border-radius: 50%; background: linear-gradient(180deg, #ffffff, #eef6fb); display: grid; place-items: center; box-shadow: inset 0 2px 0 rgba(255,255,255,0.85), 0 3px 10px rgba(11,92,171,0.08); }
@@ -375,34 +462,27 @@ const activeMegaItem = computed(() => megaSide[activeMega.value])
 .nav-tabs a { position: relative; color: #274764; text-decoration: none; font-weight: 700; font-size: 15px; }
 .nav-item.active > a::after,
 .category-nav:hover > a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -16px; height: 3px; border-radius: 999px; background: #0b5cab; }
-.mega-menu { position: absolute; top: calc(100% + 15px); left: 50%; transform: translateX(-23%); width: 1020px; background: #fff; border: 1px solid #dfe8ef; border-top: 3px solid #0b5cab; box-shadow: 0 22px 48px rgba(23, 54, 83, 0.14); border-radius: 0 0 18px 18px; padding: 22px 24px 26px; display: none; z-index: 30; }
-.category-nav:hover .mega-menu { display: block; }
-.mega-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid #e8eef4; }
-.mega-head strong { font-size: 18px; color: #173653; }
-.mega-head span { color: #7a8fa1; font-size: 13px; }
-.mega-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
-.mega-side { display: grid; gap: 10px; align-content: start; padding-right: 10px; border-right: 1px solid #ebf1f5; }
-.mega-side-item { border: none; text-align: left; border-radius: 12px; padding: 12px 14px; background: #f5f9fc; color: #35526d; font-weight: 700; cursor: pointer; }
-.mega-side-item.active { background: #0b5cab; color: #fff; }
-.mega-content { min-width: 0; }
-.mega-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 28px; }
-.mega-col { min-width: 0; }
-.mega-col h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e6eef4; color: #173653; font-size: 15px; }
-.mega-col a { display: block; margin-bottom: 9px; color: #6b8093; font-size: 14px; line-height: 1.45; }
-.mega-feature { display: grid; height: 100%; align-items: stretch; }
-.mega-feature-card { min-height: 240px; border-radius: 18px; background: linear-gradient(135deg, #edf6ff, #dbeef9); padding: 24px; }
-.mega-feature-card small { display: block; margin-bottom: 8px; color: #0b5cab; font-weight: 700; letter-spacing: 1px; }
-.mega-feature-card h4 { margin: 0 0 12px; font-size: 28px; color: #173653; }
-.mega-feature-card p { margin: 0; color: #5f768c; line-height: 1.7; }
-.hero-wrap { padding: 26px 0 24px; background: #fff; }
-.hero-stage { display: grid; grid-template-columns: auto 0.78fr 1.22fr 0.78fr auto; gap: 18px; align-items: center; }
-.hero-card { border-radius: 30px; overflow: hidden; height: 392px; box-shadow: 0 16px 40px rgba(19, 49, 79, 0.1); background: #fff; }
-.hero-card img, .helpful-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-card.side { transform: scale(0.96); opacity: 0.9; }
-.carousel-arrow { width: 46px; height: 46px; border-radius: 50%; border: 1px solid #d9e7f1; background: #fff; color: #6b8093; font-size: 28px; cursor: pointer; box-shadow: 0 6px 18px rgba(19, 49, 79, 0.08); }
-.dots { display: flex; justify-content: center; gap: 10px; padding-top: 18px; }
-.dots span { width: 10px; height: 10px; border-radius: 50%; background: #d5e2ec; }
-.dots span.active { background: #0b5cab; }
+.mega-overlay { position: absolute; top: 100%; left: 0; right: 0; z-index: 35; }
+.mega-panel { width: 100%; background: #fff; border-top: 1px solid #eef3f7; box-shadow: 0 18px 34px rgba(18, 43, 70, 0.12); }
+.mega-panel-inner { padding: 18px 0 26px; }
+.mega-grid-full { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 30px; align-items: start; }
+.mega-column h4 { margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid #e8eef4; color: #173653; font-size: 15px; }
+.mega-column a { display: block; margin-bottom: 10px; color: #667e92; text-decoration: none; font-size: 14px; line-height: 1.45; }
+.hero-wrap { position: relative; z-index: 1; padding: 26px 0 24px; background: #fff; overflow: hidden; }
+.hero-carousel-shell { position: relative; width: 100vw; left: 50%; transform: translateX(-50%); }
+.hero-viewport { overflow: hidden; width: 100%; padding: 0 var(--hero-peek); }
+.hero-track { display: flex; align-items: stretch; }
+.hero-slide-card { flex: 0 0 570px; width: 570px; height: 600px; margin-right: 18px; border: 3px solid #2f73b9; background: #fff; overflow: hidden; }
+.hero-slide-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.theme-sale { background: #fdf1f6; }
+.theme-apron { background: #fff5f8; }
+.theme-glove { background: #eef8ff; }
+.carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 58px; height: 58px; border-radius: 50%; border: 1px solid #d6e1ea; background: rgba(255,255,255,0.95); color: #506579; font-size: 30px; cursor: pointer; box-shadow: 0 8px 18px rgba(18, 43, 70, 0.12); z-index: 8; }
+.carousel-arrow.left { left: 22px; }
+.carousel-arrow.right { right: 22px; }
+.dots { display: flex; justify-content: center; gap: 10px; padding-top: 14px; }
+.dot-btn { width: 10px; height: 10px; border-radius: 50%; border: none; background: #d6dee7; cursor: pointer; padding: 0; }
+.dot-btn.active { background: #0b5cab; }
 .shortcut-section { background: #edf5f9; padding: 34px 0 42px; }
 .shortcut-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
 .shortcut-card { background: #fff; border-radius: 14px; padding: 18px 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; border: 1px solid #e2ebf2; min-height: 80px; }
@@ -438,6 +518,7 @@ const activeMegaItem = computed(() => megaSide[activeMega.value])
 .info-gap { margin-bottom: 22px; }
 .helpful-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .helpful-card { min-height: 220px; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 28px rgba(19, 49, 79, 0.06); }
+.helpful-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .catalog-banner { border-radius: 26px; background: linear-gradient(135deg, #0d5ca9, #1b8bc9 70%); color: #fff; padding: 28px; display: grid; grid-template-columns: 160px 1fr 240px; gap: 24px; align-items: center; }
 .catalog-free { width: 140px; height: 140px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); display: grid; place-items: center; text-align: center; }
 .catalog-free span { display: block; font-size: 14px; letter-spacing: 1px; }
@@ -473,29 +554,32 @@ const activeMegaItem = computed(() => megaSide[activeMega.value])
 .contact-panel strong { display: block; margin-top: 8px; font-size: 30px; color: #0b5cab; }
 .contact-panel p { margin: 8px 0 0; color: #5f768c; }
 .contact-panel.fax { background: #fff3f7; }
+@media (max-width: 1400px) {
+  .hero-slide-card { flex-basis: 460px; width: 460px; height: 484px; }
+}
 @media (max-width: 1100px) {
   .header-main { grid-template-columns: 1fr; justify-items: center; }
   .search-area, .search-block { width: 100%; }
-  .hero-stage { grid-template-columns: 1fr; }
-  .hero-card.side { display: none; }
-  .carousel-arrow { display: none; }
   .shortcut-grid, .sale-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .news-item, .catalog-banner, .footer-clone-grid, .mega-layout { grid-template-columns: 1fr; }
-  .helpful-grid { grid-template-columns: 1fr; }
+  .news-item, .catalog-banner, .footer-clone-grid { grid-template-columns: 1fr; }
+  .helpful-grid, .mega-grid-full { grid-template-columns: 1fr 1fr; }
   .catalog-side { justify-items: start; }
-  .mega-menu { position: static; transform: none; width: 100%; box-shadow: none; border: 1px solid #e6eef4; border-radius: 18px; margin-top: 12px; }
-  .mega-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mega-side { border-right: none; border-bottom: 1px solid #ebf1f5; padding-right: 0; padding-bottom: 12px; }
+  .hero-viewport { padding: 0 24px; }
+  .hero-slide-card { flex-basis: min(70vw, 460px); width: min(70vw, 460px); height: min(74vw, 484px); }
 }
 @media (max-width: 768px) {
   .notice-inner { padding: 6px 0; font-size: 12px; }
   .logo-copy h1 { font-size: 28px; }
   .header-icons { width: 100%; justify-content: center; }
   .nav-tabs { flex-wrap: wrap; gap: 20px; }
-  .hero-card { height: 300px; }
+  .mega-grid-full, .shortcut-grid, .sale-grid, .footer-links { grid-template-columns: 1fr; }
+  .hero-viewport { padding: 0 12px; }
+  .hero-slide-card { flex-basis: 82vw; width: 82vw; height: 88vw; }
+  .carousel-arrow { width: 46px; height: 46px; font-size: 26px; }
+  .carousel-arrow.left { left: 8px; }
+  .carousel-arrow.right { right: 8px; }
   .catalog-copy h2 { font-size: 32px; }
-  .shortcut-grid, .sale-grid, .footer-links, .mega-grid { grid-template-columns: 1fr; }
-  .news-head, .section-head-line, .recent-box, .mega-head { flex-direction: column; align-items: flex-start; }
+  .news-head, .section-head-line, .recent-box { flex-direction: column; align-items: flex-start; }
   .recent-box { align-items: stretch; }
 }
 </style>
